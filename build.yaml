@@ -19,10 +19,10 @@
 #
 include:
   - board: seeeduino_xiao_ble
-    shield: meteorite40
+    shield: meteorite40 rgbled_adapter
     #snippet: studio-rpc-usb-uart zmk-usb-logging
     snippet: studio-rpc-usb-uart
   - board: seeeduino_xiao_ble
-    shield: meteorite40_low
+    shield: meteorite40_low rgbled_adapter
     #snippet: studio-rpc-usb-uart zmk-usb-logging
     snippet: studio-rpc-usb-uart
