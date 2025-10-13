@@ -118,10 +118,10 @@
         layer_3 {
             display-name = "FUNCTION";
             bindings = <
-&none   &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &mo 6     &kp LC(T)  &kp LG(TAB)        &kp TAB       &kp LCTRL      &kp LS(LG(D))
-&none   &none         &none         &none         &none     &kp LC(S)  &kp LA(LC(RIGHT))  &kp LA(LEFT)  &kp LA(RIGHT)  &trans
-&none   &none         &none         &none         &none     &none      &none              &kp LC(N)     &mkp MB3       &kp LC(W)      &trans  &mo 4
-&trans  &trans        &trans        &trans        &mkp MB2  &mkp MB1   &trans             &trans
+&none   &bt BT_SEL 0      &bt BT_SEL 1      &bt BT_SEL 2      &mo 6     &kp LC(T)      &kp LC(B)          &kp TAB       &kp LCTRL      &kp LS(LG(D))
+&none   &kp LA(NUMBER_4)  &kp LA(N5)        &kp LA(NUMBER_6)  &none     &kp LC(LA(T))  &kp LA(LC(RIGHT))  &kp LA(LEFT)  &kp LA(RIGHT)  &trans
+&none   &kp LA(NUMBER_1)  &kp LA(NUMBER_2)  &kp LA(NUMBER_3)  &none     &none          &none              &kp LC(N)     &kp LC(LA(R))  &kp LC(W)      &trans  &mo 4
+&trans  &trans            &trans            &trans            &mkp MB2  &mkp MB1       &trans             &trans
             >;
         };
 
