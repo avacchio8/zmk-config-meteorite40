@@ -108,7 +108,7 @@
 
     keymap {
         compatible = "zmk,keymap";
-        layout = &LOW_PROFILE_DEFAULT;
+        layout = &LOW_PROFILE_TYPE_B;
 
         win_default_layer {
             display-name = "BASE";
@@ -118,6 +118,9 @@
                 &kp Z        &kp X       &kp C        &kp V        &kp B        &mkp MB1     &mkp MB2    &kp N        &kp M       &kp COMMA   &kp DOT  &lt 4 SLASH
                                     &kp LWIN  &mt LCTRL TAB  &mt LSHIFT SPACE  &lt 1 SPACE  &lt 2 ENTER  &lt 2 BSPC  &lt 3 DEL  &kp RALT
             >;
+            sensor-bindings =
+                <&inc_dec_kp LC(MINUS) LC(EQUAL)>, // RE0: ctrl + - / +,,,
+                <&inc_dec_kp C_VOL_DN C_VOL_UP>; // RE1: volume down/up
         };
 
         layer_1 {
@@ -128,6 +131,9 @@
                 &none      &none     &none     &none     &none      &mkp MB4  &mkp MB5   &kp GRAVE  &kp TILDE  &kp LBRC   &kp RBRC   &kp PLUS
                                      &trans     &trans    &trans    &trans    &trans     &kp DEL    &trans     &trans
             >;
+            sensor-bindings =
+                <&inc_dec_kp LC(MINUS) LC(EQUAL)>, // RE0: ctrl + - / +,,,
+                <&inc_dec_kp C_VOL_DN C_VOL_UP>; // RE1: volume down/up
         };
 
         layer_2 {
@@ -138,6 +144,9 @@
                 &kp N0           &kp N1     &kp N2     &kp N3     &kp DOT   &mkp MB4   &mkp MB5   &none  &none     &none   &none        &none
                                         &trans           &trans     &trans     &trans    &trans        &trans  &trans    &trans
             >;
+            sensor-bindings =
+                <&inc_dec_kp LC(MINUS) LC(EQUAL)>, // RE0: ctrl + - / +,,,
+                <&inc_dec_kp C_VOL_DN C_VOL_UP>; // RE1: volume down/up
         };
 
         layer_3 {
@@ -148,6 +157,9 @@
                 &none   &none   &none   &none   &none   &none   &none   &none   &none   &none    &none  &none
                                 &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans
             >;
+            sensor-bindings =
+                <&inc_dec_kp LC(MINUS) LC(EQUAL)>, // RE0: ctrl + - / +,,,
+                <&inc_dec_kp C_VOL_DN C_VOL_UP>; // RE1: volume down/up
         };
 
         layer_4 {
@@ -158,6 +170,9 @@
 				&ccfg C_SAVE    &ccfg C_RESET   &none            &none            &ccfg C_SCRL2_UP         &none  &none    &bootloader    &none           &none         &none         &none
 												                    &trans       &trans  &trans  &trans  &trans  &trans    &trans        &trans
 			>;
+            sensor-bindings =
+                <&inc_dec_kp LC(MINUS) LC(EQUAL)>, // RE0: ctrl + - / +,,,
+                <&inc_dec_kp C_VOL_DN C_VOL_UP>; // RE1: volume down/up
         };
     };
 };
