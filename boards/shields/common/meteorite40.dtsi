@@ -143,7 +143,7 @@
     };
 
     motion_scaler: motion_scaler {
-        compatible = "zmk,input-processor-motion-scaler";
+        compatible = "zmk,input-processor-meteorite-motion-scaler";
         #input-processor-cells = <0>;
         custom-config-scaling = <0>;
         scaling-mode = <SCALING_MODE>;
@@ -154,7 +154,7 @@
     };
 
     scroll_motion_scaler: motion_scaler_scroll {
-        compatible = "zmk,input-processor-motion-scaler";
+        compatible = "zmk,input-processor-meteorite-motion-scaler";
         #input-processor-cells = <0>;
         custom-config-scaling = <1>;
         scaling-mode = <SCROLL_SCALING_MODE>;
@@ -165,13 +165,13 @@
     };
 
     sensor_rotation: sensor_rotation {
-        compatible = "zmk,input-processor-sensor-rotation";
+        compatible = "zmk,input-processor-meteorite-sensor-rotation";
         #input-processor-cells = <0>;
         rotation-angle = <ROTATION_ANGLE>;
     };
 
     xy_clipper: xy_clipper {
-        compatible = "zmk,input-processor-xy-clipper";
+        compatible = "zmk,input-processor-meteorite-xy-clipper";
         #input-processor-cells = <0>;
         threshold = <CLIPPER_THRESHOLD>;
         invert-x = <INVERT_X>;
@@ -191,7 +191,7 @@
 #endif
 
     scroll_layer_gate: scroll_layer_gate {
-        compatible = "zmk,input-processor-scroll-layer";
+        compatible = "zmk,input-processor-meteorite-scroll-layer";
         #input-processor-cells = <0>;
         layer-1 = <SCROLL_LAYER_1>;
         layer-2 = <SCROLL_LAYER_2>;

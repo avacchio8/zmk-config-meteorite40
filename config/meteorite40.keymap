@@ -28,13 +28,6 @@
 
 / { 
     behaviors {
-        mouse_scroll_var: mouse_scroll_var {
-            compatible = "zmk,behavior-sensor-rotate-var";
-            #sensor-binding-cells = <2>;
-            bindings = <&msc>, <&msc>;
-            tap-ms = <25>;
-        };
-
         mck_mt: mck_mt {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
@@ -61,6 +54,23 @@
             position-bindings = <12 13>; /* D, F */
             position-binding-behaviors = <&kp LS(TAB)>, <&kp TAB>;
         };
+
+        enc_msc: encoder_mouse_scroll {
+            compatible = "zmk,behavior-sensor-rotate-var";
+            #sensor-binding-cells = <2>;
+            bindings = <&msc>, <&msc>;
+            tap-ms = <25>;
+            display-name = "Encoder Mouse Scroll";
+        };
+
+        enc_kp: encoder_key_press {
+            compatible = "zmk,behavior-sensor-rotate-var";
+            #sensor-binding-cells = <2>;
+            bindings = <&kp>, <&kp>;
+            tap-ms = <25>;
+            display-name = "Encoder Key Press";
+        };
+
     };
 
     combos {
@@ -129,11 +139,8 @@
             >;
 
             sensor-bindings =
-                <&mouse_scroll_var SCRL_RIGHT SCRL_LEFT>, // RE0(左): 時計回/右スクロール、反時計回/左スクロール
-                <&mouse_scroll_var SCRL_UP SCRL_DOWN>;    // RE1(右): 時計回/上スクロール、反時計回/下スクロール
-
-                //<&inc_dec_kp LC(MINUS) LC(EQUAL)>, // RE0: ctrl + - / +,,,
-                //<&inc_dec_kp C_VOL_DN C_VOL_UP>; // RE1: volume down/up
+                <&enc_kp C_VOL_DN C_VOL_UP>,
+                <&enc_kp C_VOL_DN C_VOL_UP>;
         };
 
         layer_1 {
@@ -146,11 +153,8 @@
             >;
 
             sensor-bindings =
-                <&mouse_scroll_var SCRL_UP SCRL_DOWN>   , // RE1(右): 時計回/上スクロール、反時計回/下スクロール
-                <&mouse_scroll_var SCRL_RIGHT SCRL_LEFT>; // RE0(左): 時計回/右スクロール、反時計回/左スクロール
-                
-                //<&inc_dec_kp LC(MINUS) LC(EQUAL)>, // RE0: ctrl + - / +,,,
-                //<&inc_dec_kp C_VOL_DN C_VOL_UP>; // RE1: volume down/up
+                <&enc_kp C_VOL_DN C_VOL_UP>,
+                <&enc_kp C_VOL_DN C_VOL_UP>;
         };
 
         layer_2 {
@@ -163,8 +167,8 @@
             >;
 
             sensor-bindings =
-                <&inc_dec_kp LC(MINUS) LC(EQUAL)>, // RE0: ctrl + - / +,,,
-                <&inc_dec_kp C_VOL_DN C_VOL_UP>; // RE1: volume down/up
+                <&enc_kp C_VOL_DN C_VOL_UP>,
+                <&enc_kp C_VOL_DN C_VOL_UP>;
 
         };
 
@@ -178,8 +182,8 @@
             >;
 
             sensor-bindings =
-                <&inc_dec_kp LC(MINUS) LC(EQUAL)>, // RE0: ctrl + - / +,,,
-                <&inc_dec_kp C_VOL_DN C_VOL_UP>; // RE1: volume down/up
+                <&enc_kp C_VOL_DN C_VOL_UP>,
+                <&enc_kp C_VOL_DN C_VOL_UP>;
 
         };
         layer_4 {
@@ -192,8 +196,8 @@
 			>;
 
             sensor-bindings =
-                <&inc_dec_kp LC(MINUS) LC(EQUAL)>, // RE0: ctrl + - / +,,,
-                <&inc_dec_kp C_VOL_DN C_VOL_UP>; // RE1: volume down/up
+                <&enc_kp C_VOL_DN C_VOL_UP>,
+                <&enc_kp C_VOL_DN C_VOL_UP>;
         };
     };
 };
