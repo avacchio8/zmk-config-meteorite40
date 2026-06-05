@@ -234,13 +234,15 @@
                            <&scroll_motion_scaler>,
                            <&to_wheel>;
         /* 固定 Profile の 12 binding（profile-major / 方向 LEFT,RIGHT,UP,DOWN）。
-         * &ball_mosk <Win> <Mac>（0 = そのOSで no-op）、OS非依存は &kp。 */
+         * &ball_mosk <Win> <Mac>（0 = そのOSで no-op）、OS非依存は &kp。
+         * ズームは consumer の C_AC_ZOOM_IN/OUT だとブラウザ/OS が反応しないため、
+         * 確実に効く Ctrl/⌘ + = / - を使う。 */
         bindings =
             /* BROWSER */
             <&ball_mosk LC(PG_UP) LG(LA(LEFT))>,
             <&ball_mosk LC(PG_DN) LG(LA(RIGHT))>,
-            <&kp C_AC_ZOOM_IN>,
-            <&kp C_AC_ZOOM_OUT>,
+            <&ball_mosk LC(EQUAL) LG(EQUAL)>,
+            <&ball_mosk LC(MINUS) LG(MINUS)>,
             /* DESKTOP */
             <&ball_mosk LC(LG(LEFT)) LC(LEFT)>,
             <&ball_mosk LC(LG(RIGHT)) LC(RIGHT)>,
