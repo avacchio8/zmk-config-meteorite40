@@ -197,11 +197,17 @@
         invert-y = <INVERT_Y>;
     };
 
-#if CONFIG_ZMK_CUSTOM_CONFIG
+    /*
+     * NOTE: これらのノードを #if CONFIG_ZMK_CUSTOM_CONFIG で囲ってはいけない。
+     * Zephyr は devicetree のプリプロセスを Kconfig より先に実行するため、DTS
+     * 内では CONFIG_* マクロが未定義（=偽）になり、ノードごと DT から除外され、
+     * default 値が一切読めなくなる（ZMK 自身も dtsi 内で #if CONFIG_ を使わない）。
+     */
     ball_profile_defaults: ball_profile_defaults {
         compatible = "zmk,ball-profile-defaults";
-        /* レイヤ index 順: 0=BASE 1=SYMBOLS 2=NUM/ARROW 3=FUNCTION 4=SETTING */
-        layer-profiles = <BALL_OFF BALL_OFF BALL_SCROLL BALL_OFF BALL_OFF>;
+        /* レイヤ index 順: 0=BASE 1=SYMBOLS 2=NUM/ARROW 3=FUNCTION 4=SETTING。
+         * テスト用に各レイヤへ別プロファイルを割当（APP/USER1 は除外）。 */
+        layer-profiles = <BALL_OFF BALL_SCROLL BALL_BROWSER BALL_DESKTOP BALL_WINDOW>;
         sensitivity = <BALL_SENS_NORMAL>;
     };
 
@@ -209,7 +215,6 @@
         compatible = "zmk,custom-config-defaults";
         os-mode = <OS_MODE_DEFAULT>;
     };
-#endif
 
     behaviors {
         /* Ball Profile 専用の OS キー（keymap の &mosk とは別インスタンスにして
