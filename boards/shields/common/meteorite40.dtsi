@@ -2,6 +2,15 @@
 #include <dt-bindings/zmk/matrix_transform.h>
 #include <dt-bindings/zmk/input_transform.h>
 #include <dt-bindings/zmk/keys.h>
+/*
+ * keys.h pulls in modifiers.h, whose RC(keycode) (right-control) macro shadows
+ * matrix_transform.h's RC(row, col) used by the shield keymap transforms.
+ * Restore the transform macro here; the ball router bindings below use only
+ * LC/LG/LA, never RC. (Keymaps include keys.h in their own translation unit and
+ * do not use right-control RC(), so they are unaffected.)
+ */
+#undef RC
+#define RC(row, col) (((row) << 8) + (col))
 #include <input/processors.dtsi>
 
 #define DEFAULT_CPI 800         // トラックボールの感度
