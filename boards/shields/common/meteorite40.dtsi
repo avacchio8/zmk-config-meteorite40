@@ -1,14 +1,24 @@
 #include <zephyr/dt-bindings/input/input-event-codes.h>
 #include <dt-bindings/zmk/matrix_transform.h>
 #include <dt-bindings/zmk/input_transform.h>
+#include <dt-bindings/zmk/keys.h>
 #include <input/processors.dtsi>
 
 #define DEFAULT_CPI 800         // トラックボールの感度
 #define ROTATION_ANGLE 20       // トラックボールのY軸を回転
 #define CLIPPER_THRESHOLD 20    // スクロール時に斜めの値をクリップ
 
-#define SCROLL_LAYER_1 2        // スクロールを有効にするレイヤー1（固定）
-#define SCROLL_LAYER_2 3        // スクロールを有効にするレイヤー2
+#define SCROLL_LAYER_1 2        // スクロールを有効にするレイヤー（Ball Profile SCROLL の既定レイヤー）
+#define SCROLL_LAYER_2 3        // 旧スクロールレイヤー2（廃止。参照は残すが未使用）
+
+// Ball Profile 値（enum zmk_ball_profile / zmk.meteorite.BallProfile と一致させること）
+#define BALL_OFF 0
+#define BALL_SCROLL 1
+#define BALL_BROWSER 2
+#define BALL_DESKTOP 3
+#define BALL_WINDOW 4
+#define BALL_USER1 6
+#define BALL_SENS_NORMAL 1      // enum zmk_ball_sensitivity の NORMAL
 #define INVERT_X 0              // X軸のスクロールの反転
 #define INVERT_Y 0              // Y軸のスクロールの反転
 
@@ -179,9 +189,11 @@
     };
 
 #if CONFIG_ZMK_CUSTOM_CONFIG
-    scroll_layer_defaults: scroll_layer_defaults {
-        compatible = "zmk,custom-scroll-layers";
-        layers = <SCROLL_LAYER_1 SCROLL_LAYER_2>;
+    ball_profile_defaults: ball_profile_defaults {
+        compatible = "zmk,ball-profile-defaults";
+        /* レイヤ index 順: 0=BASE 1=SYMBOLS 2=NUM/ARROW 3=FUNCTION 4=SETTING */
+        layer-profiles = <BALL_OFF BALL_OFF BALL_SCROLL BALL_OFF BALL_OFF>;
+        sensitivity = <BALL_SENS_NORMAL>;
     };
 
     custom_config_defaults: custom_config_defaults {
@@ -190,14 +202,41 @@
     };
 #endif
 
-    scroll_layer_gate: scroll_layer_gate {
-        compatible = "zmk,input-processor-meteorite-scroll-layer";
+    behaviors {
+        /* Ball Profile 専用の OS キー（keymap の &mosk とは別インスタンスにして
+         * pressed 状態を共有しない）。param 0 はそのOSで no-op。 */
+        ball_mosk: ball_mosk {
+            compatible = "zmk,behavior-meteorite-os-key";
+            #binding-cells = <2>;
+            display-name = "Ball OS-Switch Key";
+        };
+    };
+
+    ball_profile_router: ball_profile_router {
+        compatible = "zmk,input-processor-meteorite-ball-profile";
         #input-processor-cells = <0>;
-        layer-1 = <SCROLL_LAYER_1>;
-        layer-2 = <SCROLL_LAYER_2>;
+        /* SCROLL profile のサブチェーン（現挙動を踏襲） */
         input-processors = <&xy_clipper>,
                            <&scroll_motion_scaler>,
                            <&to_wheel>;
+        /* 固定 Profile の 12 binding（profile-major / 方向 LEFT,RIGHT,UP,DOWN）。
+         * &ball_mosk <Win> <Mac>（0 = そのOSで no-op）、OS非依存は &kp。 */
+        bindings =
+            /* BROWSER */
+            <&ball_mosk LC(PG_UP) LG(LA(LEFT))>,
+            <&ball_mosk LC(PG_DN) LG(LA(RIGHT))>,
+            <&kp C_AC_ZOOM_IN>,
+            <&kp C_AC_ZOOM_OUT>,
+            /* DESKTOP */
+            <&ball_mosk LC(LG(LEFT)) LC(LEFT)>,
+            <&ball_mosk LC(LG(RIGHT)) LC(RIGHT)>,
+            <&ball_mosk LG(TAB) LC(UP)>,
+            <&ball_mosk LG(D) 0>,
+            /* WINDOW */
+            <&ball_mosk LG(LEFT) 0>,
+            <&ball_mosk LG(RIGHT) 0>,
+            <&ball_mosk LG(UP) LC(LG(F))>,
+            <&ball_mosk LG(DOWN) LG(M)>;
     };
 
     trackball_listener {
@@ -205,7 +244,7 @@
         device = <&trackball>;
 
         input-processors = <&sensor_rotation>,
-                           <&scroll_layer_gate>,
+                           <&ball_profile_router>,
                            <&motion_scaler>;
     };
 };

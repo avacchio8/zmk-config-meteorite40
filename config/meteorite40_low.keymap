@@ -186,7 +186,7 @@
 			bindings = <
 				&ccfg C_CPI_DN  &ccfg C_CPI_UP  &ccfg C_ROT_DN   &ccfg C_ROT_UP   &ccfg C_SCALE_TOG                        &bt BT_SEL 0   &bt BT_SEL 1    &bt BT_SEL 2  &bt BT_SEL 3  &bt BT_SEL 4
 				&ccfg C_SDIV_DN &ccfg C_SDIV_UP &ccfg C_SCRH_TOG &ccfg C_SCRV_TOG &ccfg C_SCRL_SCALE_TOG                   &bt BT_CLR     &bt BT_CLR_ALL  &none         &none         &none
-				&ccfg C_SAVE    &ccfg C_RESET   &none            &none            &ccfg C_SCRL2_UP         &none  &none    &bootloader    &none           &none         &none         &none
+				&ccfg C_SAVE    &ccfg C_RESET   &none            &none            &none                    &none  &none    &bootloader    &none           &none         &none         &none
 												                    &trans       &trans  &trans  &trans  &trans  &trans    &trans        &trans
 			>;
             sensor-bindings =
