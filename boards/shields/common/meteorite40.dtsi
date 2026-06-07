@@ -17,9 +17,6 @@
 #define ROTATION_ANGLE 20       // トラックボールのY軸を回転
 #define CLIPPER_THRESHOLD 20    // スクロール時に斜めの値をクリップ
 
-#define SCROLL_LAYER_1 2        // スクロールを有効にするレイヤー（Ball Profile SCROLL の既定レイヤー）
-#define SCROLL_LAYER_2 3        // 旧スクロールレイヤー2（廃止。参照は残すが未使用）
-
 // Ball Profile 値（enum zmk_ball_profile / zmk.meteorite.BallProfile と一致させること）
 #define BALL_OFF 0
 #define BALL_SCROLL 1
@@ -206,8 +203,8 @@
     ball_profile_defaults: ball_profile_defaults {
         compatible = "zmk,ball-profile-defaults";
         /* レイヤ index 順: 0=BASE 1=SYMBOLS 2=NUM/ARROW 3=FUNCTION 4=SETTING。
-         * テスト用に各レイヤへ別プロファイルを割当（APP/USER1 は除外）。 */
-        layer-profiles = <BALL_OFF BALL_SCROLL BALL_BROWSER BALL_DESKTOP BALL_WINDOW>;
+         * デフォルト: Layer 2 (NUM/ARROW) のみ SCROLL、他は OFF。 */
+        layer-profiles = <BALL_OFF BALL_OFF BALL_SCROLL BALL_OFF BALL_OFF>;
         sensitivity = <BALL_SENS_NORMAL>;
     };
 
