@@ -27,7 +27,7 @@
 #define BALL_DESKTOP 3
 #define BALL_WINDOW 4
 #define BALL_USER1 6
-#define BALL_SENS_NORMAL 1      // enum zmk_ball_sensitivity の NORMAL
+#define BALL_SENS_NORMAL 2      // enum zmk_ball_sensitivity の NORMAL (順序: VERY_LIGHT=0,LIGHT=1,NORMAL=2,HEAVY=3,VERY_HEAVY=4)
 #define INVERT_X 0              // X軸のスクロールの反転
 #define INVERT_Y 0              // Y軸のスクロールの反転
 
