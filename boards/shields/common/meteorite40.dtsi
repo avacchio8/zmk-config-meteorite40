@@ -240,7 +240,7 @@
             <&ball_mosk LC(LG(LEFT)) LC(LEFT)>,
             <&ball_mosk LC(LG(RIGHT)) LC(RIGHT)>,
             <&ball_mosk LG(TAB) LC(UP)>,
-            <&ball_mosk ESC ESC>,
+            <&ball_mosk LG(D) F11>,
             /* WINDOW（Mac: System Settings > Keyboard Shortcuts > App Shortcuts で
              * 「Window > Move & Resize > Left/Right/Fill」に Ctrl+Opt+←/→/↑ を設定） */
             <&ball_mosk LG(LEFT) LC(LA(LEFT))>,
