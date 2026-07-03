@@ -1,0 +1,43 @@
+name: release-please
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    outputs:
+      release_created: ${{ steps.rp.outputs.release_created }}
+      tag_name: ${{ steps.rp.outputs.tag_name }}
+    steps:
+      - uses: googleapis/release-please-action@v4
+        id: rp
+
+  # Tags/releases created with GITHUB_TOKEN don't trigger downstream
+  # workflows (recursion guard), so build + upload run as sibling jobs in
+  # this same push-to-main run, gated on release_created. The checkout is
+  # the release-PR merge commit, i.e. exactly the tagged code.
+  build:
+    needs: release-please
+    if: needs.release-please.outputs.release_created == 'true'
+    uses: zmkfirmware/zmk/.github/workflows/build-user-config.yml@main
+
+  upload-assets:
+    needs: [release-please, build]
+    if: needs.release-please.outputs.release_created == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v6
+        with:
+          name: firmware
+          path: dist
+      - env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "${{ needs.release-please.outputs.tag_name }}" dist/*.uf2 --repo "${{ github.repository }}"
