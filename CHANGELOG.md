@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.3.1](https://github.com/iwk7273/zmk-config-meteorite40/compare/v4.3.0...v4.3.1) (2026-07-03)
+
+
+### 修正
+
+* Meteorite Studio へ Bluetooth 経由で接続するための操作を、キー割り当てやコンボから選べるよう修正しました。 ([9659531](https://github.com/iwk7273/zmk-config-meteorite40/commit/96595318fbd86ba13b9f2bb970e9d9a5fd5f5bcf))
+
 ## 4.3.0 (2026-07-03)
 
 
