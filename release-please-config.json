@@ -3,7 +3,7 @@
   "packages": {
     ".": {
       "release-type": "simple",
-      "release-as": "1.0.0",
+      "release-as": "4.3.0",
       "include-component-in-tag": false,
       "extra-files": [{ "type": "generic", "path": "Kconfig" }]
     }
