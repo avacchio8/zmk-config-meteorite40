@@ -1,14 +1,26 @@
 #include <zephyr/dt-bindings/input/input-event-codes.h>
 #include <dt-bindings/zmk/matrix_transform.h>
 #include <dt-bindings/zmk/input_transform.h>
+#include <dt-bindings/zmk/keys.h>
+/*
+ * keys.h pulls in modifiers.h, whose RC(keycode) (right-control) macro shadows
+ * matrix_transform.h's RC(row, col) used by the shield keymap transforms.
+ * Restore the transform macro here; the ball router bindings below use only
+ * LC/LG/LA, never RC. (Keymaps include keys.h in their own translation unit and
+ * do not use right-control RC(), so they are unaffected.)
+ */
+#undef RC
+#define RC(row, col) (((row) << 8) + (col))
 #include <input/processors.dtsi>
 
 #define DEFAULT_CPI 800         // トラックボールの感度
 #define ROTATION_ANGLE 20       // トラックボールのY軸を回転
 #define CLIPPER_THRESHOLD 20    // スクロール時に斜めの値をクリップ
 
-#define SCROLL_LAYER_1 2        // スクロールを有効にするレイヤー1（固定）
-#define SCROLL_LAYER_2 3        // スクロールを有効にするレイヤー2
+// Ball Profile 値（enum zmk_ball_profile / zmk.meteorite.BallProfile と一致させること）
+#define BALL_OFF 0
+#define BALL_SCROLL 1
+#define BALL_SENS_NORMAL 2
 #define INVERT_X 0              // X軸のスクロールの反転
 #define INVERT_Y 0              // Y軸のスクロールの反転
 
@@ -178,26 +190,63 @@
         invert-y = <INVERT_Y>;
     };
 
-#if CONFIG_ZMK_CUSTOM_CONFIG
-    scroll_layer_defaults: scroll_layer_defaults {
-        compatible = "zmk,custom-scroll-layers";
-        layers = <SCROLL_LAYER_1 SCROLL_LAYER_2>;
+    /*
+     * NOTE: これらのノードを #if CONFIG_ZMK_CUSTOM_CONFIG で囲ってはいけない。
+     * Zephyr は devicetree のプリプロセスを Kconfig より先に実行するため、DTS
+     * 内では CONFIG_* マクロが未定義（=偽）になり、ノードごと DT から除外され、
+     * default 値が一切読めなくなる（ZMK 自身も dtsi 内で #if CONFIG_ を使わない）。
+     */
+    ball_profile_defaults: ball_profile_defaults {
+        compatible = "zmk,ball-profile-defaults";
+        /* レイヤ index 順: 0=BASE 1=SYMBOLS 2=NUM/ARROW 3=FUNCTION 4=SETTING。
+         * デフォルト: Layer 2 (NUM/ARROW) のみ SCROLL、他は OFF。 */
+        layer-profiles = <BALL_OFF BALL_OFF BALL_SCROLL BALL_OFF BALL_OFF>;
+        sensitivity = <BALL_SENS_NORMAL>;
     };
 
     custom_config_defaults: custom_config_defaults {
         compatible = "zmk,custom-config-defaults";
         os-mode = <OS_MODE_DEFAULT>;
     };
-#endif
 
-    scroll_layer_gate: scroll_layer_gate {
-        compatible = "zmk,input-processor-meteorite-scroll-layer";
+    behaviors {
+        /* Ball Profile 専用の OS キー（keymap の &mosk とは別インスタンスにして
+         * pressed 状態を共有しない）。param 0 はそのOSで no-op。 */
+        ball_mosk: ball_mosk {
+            compatible = "zmk,behavior-meteorite-os-key";
+            #binding-cells = <2>;
+            display-name = "Ball OS-Switch Key";
+        };
+    };
+
+    ball_profile_router: ball_profile_router {
+        compatible = "zmk,input-processor-meteorite-ball-profile";
         #input-processor-cells = <0>;
-        layer-1 = <SCROLL_LAYER_1>;
-        layer-2 = <SCROLL_LAYER_2>;
+        /* SCROLL profile のサブチェーン（現挙動を踏襲） */
         input-processors = <&xy_clipper>,
                            <&scroll_motion_scaler>,
                            <&to_wheel>;
+        /* 固定 Profile の 12 binding（profile-major / 方向 LEFT,RIGHT,UP,DOWN）。
+         * &ball_mosk <Win> <Mac>（0 = そのOSで no-op）、OS非依存は &kp。
+         * ズームは consumer の C_AC_ZOOM_IN/OUT だとブラウザ/OS が反応しないため、
+         * 確実に効く Ctrl/⌘ + = / - を使う。 */
+        bindings =
+            /* BROWSER */
+            <&ball_mosk LC(PG_UP) LG(LA(LEFT))>,
+            <&ball_mosk LC(PG_DN) LG(LA(RIGHT))>,
+            <&ball_mosk LC(EQUAL) LG(EQUAL)>,
+            <&ball_mosk LC(MINUS) LG(MINUS)>,
+            /* DESKTOP */
+            <&ball_mosk LC(LG(LEFT)) LC(LEFT)>,
+            <&ball_mosk LC(LG(RIGHT)) LC(RIGHT)>,
+            <&ball_mosk LG(TAB) LC(UP)>,
+            <&ball_mosk LG(D) F11>,
+            /* WINDOW（Mac: System Settings > Keyboard Shortcuts > App Shortcuts で
+             * 「Window > Move & Resize > Left/Right/Fill」に Ctrl+Opt+←/→/↑ を設定） */
+            <&ball_mosk LG(LEFT) LC(LA(LEFT))>,
+            <&ball_mosk LG(RIGHT) LC(LA(RIGHT))>,
+            <&ball_mosk LG(UP) LC(LA(UP))>,
+            <&ball_mosk LG(DOWN) LC(LA(DOWN))>;
     };
 
     trackball_listener {
@@ -205,7 +254,7 @@
         device = <&trackball>;
 
         input-processors = <&sensor_rotation>,
-                           <&scroll_layer_gate>,
+                           <&ball_profile_router>,
                            <&motion_scaler>;
     };
 };
