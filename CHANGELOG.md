@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.4.0](https://github.com/iwk7273/zmk-config-meteorite40/compare/v4.3.1...v4.4.0) (2026-07-13)
+
+
+### Features
+
+* add persisted system settings ([#17](https://github.com/iwk7273/zmk-config-meteorite40/issues/17)) ([aa621cb](https://github.com/iwk7273/zmk-config-meteorite40/commit/aa621cb6aeffb4899e902939da530f844515c0d8))
+
 ## [4.3.1](https://github.com/iwk7273/zmk-config-meteorite40/compare/v4.3.0...v4.3.1) (2026-07-03)
 
 
