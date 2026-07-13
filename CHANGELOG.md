@@ -3,9 +3,15 @@
 ## [4.4.0](https://github.com/iwk7273/zmk-config-meteorite40/compare/v4.3.1...v4.4.0) (2026-07-13)
 
 
-### Features
+### 新機能
 
-* add persisted system settings ([#17](https://github.com/iwk7273/zmk-config-meteorite40/issues/17)) ([aa621cb](https://github.com/iwk7273/zmk-config-meteorite40/commit/aa621cb6aeffb4899e902939da530f844515c0d8))
+* Mod-tap / Layer-tap の Flavor、Tapping term、Quick tap、Require prior idle を Meteorite Studio から調整できるようになりました。
+* Idle timeout と Deep sleep timeout を Meteorite Studio から調整できるようになりました。
+* System 設定をキーボード本体へ保存し、電源を入れ直した後も維持するようになりました。 ([#17](https://github.com/iwk7273/zmk-config-meteorite40/issues/17)) ([aa621cb](https://github.com/iwk7273/zmk-config-meteorite40/commit/aa621cb6aeffb4899e902939da530f844515c0d8))
+
+### 修正
+
+* ロータリーエンコーダーの時計回り・反時計回り設定が、電源再投入後に失われることがある問題を修正しました。
 
 ## [4.3.1](https://github.com/iwk7273/zmk-config-meteorite40/compare/v4.3.0...v4.3.1) (2026-07-03)
 
