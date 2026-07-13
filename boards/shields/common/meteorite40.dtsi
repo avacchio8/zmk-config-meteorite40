@@ -207,6 +207,8 @@
     custom_config_defaults: custom_config_defaults {
         compatible = "zmk,custom-config-defaults";
         os-mode = <OS_MODE_DEFAULT>;
+        idle-timeout-s = <120>;
+        idle-sleep-timeout-s = <900>;
     };
 
     behaviors {
