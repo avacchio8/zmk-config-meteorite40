@@ -14,6 +14,6 @@ manifest:
       revision: main
     - name: zmk-feature-meteorite-config
       remote: iwk7273
-      revision: 3a477d90bb117841df9b2bea2688339ebe866a51
+      revision: 02e3cffc3f7785af3f699ed8e6171a9fb8ccd5a2
   self:
     path: config
