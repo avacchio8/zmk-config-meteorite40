@@ -7,13 +7,13 @@ manifest:
   projects:
     - name: zmk
       remote: iwk7273
-      revision: 08d8238f9098804e97aa5169f4cc6dcb8e36d7fd
+      revision: 5e23d5c6a6d9f5f84f1451cd3d9708d00cc5af78
       import: app/west.yml
     - name: zmk-pmw3610-driver
       remote: iwk7273
       revision: main
     - name: zmk-feature-meteorite-config
       remote: iwk7273
-      revision: 02e3cffc3f7785af3f699ed8e6171a9fb8ccd5a2
+      revision: f9cfe4b2146fd4f7948e0ecf2673277fd5772f2a
   self:
     path: config

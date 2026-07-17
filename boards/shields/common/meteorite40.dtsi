@@ -25,12 +25,11 @@
 #define INVERT_Y 0              // Y軸のスクロールの反転
 
 #define SCALING_MODE 1          // 0: 無効, 1: 有効
+#define POINTER_PROFILE 0       // 0: 標準, 1: 安定, 2: 軽快, 3: ワイド
 #define SCROLL_SCALING_MODE 0   // 0: Linear, 1: Adaptive
 #define OS_MODE_DEFAULT 0       // 0: Win, 1: Mac
-#define MAX_OUTPUT 300          // 出力の最大絶対値 |y|。既定 127
-#define HALF_INPUT 50           // r=|x|/xs の xs（counts）。既定 50
-#define EXPONENT_TENTHS 12      // 指数 p を 0.1 分解能で指定（p*10、例: 15 は p=1.5）。既定 10（p=1.0）
 
+#define POINTER_DEFAULT_DT_MS 12 // reset直後の物理速度計算に使う既定report間隔
 #define SCROLL_DEFAULT_DT_MS 12 // reset直後の物理速度計算に使う既定report間隔
 
 #define POLL_PERIOD_MS 15       // キースキャンのポーリング周期（ms）
@@ -148,10 +147,9 @@
         compatible = "zmk,input-processor-meteorite-motion-scaler";
         #input-processor-cells = <0>;
         scaling-mode = <SCALING_MODE>;
-        max-output = <MAX_OUTPUT>;
-        half-input = <HALF_INPUT>;
-        exponent-tenths = <EXPONENT_TENTHS>;
-        track-remainders;
+        pointer-profile = <POINTER_PROFILE>;
+        cpi = <DEFAULT_CPI>;
+        default-dt-ms = <POINTER_DEFAULT_DT_MS>;
     };
 
     scroll_transform: scroll_transform {
