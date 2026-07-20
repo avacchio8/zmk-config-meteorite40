@@ -1,5 +1,18 @@
 # Changelog
 
+## [4.5.0](https://github.com/iwk7273/zmk-config-meteorite40/compare/v4.4.0...v4.5.0) (2026-07-20)
+
+### 新機能
+
+* ポインタープロファイルの Standard / Responsive は、高速操作時により素早く移動できるようになりました。
+* Custom プロファイルを追加しました。低速から高速まで4段階の移動倍率を Meteorite Studio から調整できます。
+* スクロール速度に合わせて、細かな操作と素早い移動を自動で切り替えるようになりました。
+
+### 改善
+
+* センサー角度補正をX/Y同時処理に変更し、単軸・斜め・低速移動の安定性を改善しました。
+* Bluetooth経由でMeteorite Studioを使用する際のデータ送信と再接続の安定性を改善しました。
+
 ## [4.4.0](https://github.com/iwk7273/zmk-config-meteorite40/compare/v4.3.1...v4.4.0) (2026-07-13)
 
 
