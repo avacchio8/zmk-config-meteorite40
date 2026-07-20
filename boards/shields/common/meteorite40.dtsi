@@ -15,7 +15,7 @@
 
 #define DEFAULT_CPI 800         // トラックボールの感度
 #define ROTATION_ANGLE 20       // トラックボールのY軸を回転
-#define CLIPPER_THRESHOLD 20    // スクロール時に斜めの値をクリップ
+#define SCROLL_THRESHOLD 20     // スクロール1ステップのraw count閾値
 
 // Ball Profile 値（enum zmk_ball_profile / zmk.meteorite.BallProfile と一致させること）
 #define BALL_OFF 0
@@ -25,15 +25,12 @@
 #define INVERT_Y 0              // Y軸のスクロールの反転
 
 #define SCALING_MODE 1          // 0: 無効, 1: 有効
-#define SCROLL_SCALING_MODE 0   // 0: 無効, 1: 有効
+#define POINTER_PROFILE 0       // 0: 標準, 1: 安定, 2: 軽快, 3: ワイド
+#define SCROLL_SCALING_MODE 0   // 0: Linear, 1: Adaptive
 #define OS_MODE_DEFAULT 0       // 0: Win, 1: Mac
-#define MAX_OUTPUT 300          // 出力の最大絶対値 |y|。既定 127
-#define HALF_INPUT 50           // r=|x|/xs の xs（counts）。既定 50
-#define EXPONENT_TENTHS 12      // 指数 p を 0.1 分解能で指定（p*10、例: 15 は p=1.5）。既定 10（p=1.0）
 
-#define SCROLL_MAX_OUTPUT 300
-#define SCROLL_HALF_INPUT 55
-#define SCROLL_EXPONENT_TENTHS 6  // p = 0.6
+#define POINTER_DEFAULT_DT_MS 12 // reset直後の物理速度計算に使う既定report間隔
+#define SCROLL_DEFAULT_DT_MS 12 // reset直後の物理速度計算に使う既定report間隔
 
 #define POLL_PERIOD_MS 15       // キースキャンのポーリング周期（ms）
 #define DEBOUNCE_MS 10           // デバウンス時間 (ms)
@@ -146,48 +143,30 @@
     };
     */
 
-    to_wheel: to_wheel {
-        compatible = "zmk,input-processor-code-mapper";
-        #input-processor-cells = <0>;
-        type = <INPUT_EV_REL>;
-        map = <INPUT_REL_X INPUT_REL_HWHEEL>,
-              <INPUT_REL_Y INPUT_REL_WHEEL>;
-    };
-
     motion_scaler: motion_scaler {
         compatible = "zmk,input-processor-meteorite-motion-scaler";
         #input-processor-cells = <0>;
-        custom-config-scaling = <0>;
         scaling-mode = <SCALING_MODE>;
-        max-output = <MAX_OUTPUT>;
-        half-input = <HALF_INPUT>;
-        exponent-tenths = <EXPONENT_TENTHS>;
-        track-remainders;
+        pointer-profile = <POINTER_PROFILE>;
+        cpi = <DEFAULT_CPI>;
+        default-dt-ms = <POINTER_DEFAULT_DT_MS>;
     };
 
-    scroll_motion_scaler: motion_scaler_scroll {
-        compatible = "zmk,input-processor-meteorite-motion-scaler";
+    scroll_transform: scroll_transform {
+        compatible = "zmk,input-processor-meteorite-scroll-transform";
         #input-processor-cells = <0>;
-        custom-config-scaling = <1>;
+        threshold = <SCROLL_THRESHOLD>;
+        invert-x = <INVERT_X>;
+        invert-y = <INVERT_Y>;
         scaling-mode = <SCROLL_SCALING_MODE>;
-        max-output = <SCROLL_MAX_OUTPUT>;
-        half-input = <SCROLL_HALF_INPUT>;
-        exponent-tenths = <SCROLL_EXPONENT_TENTHS>;
-        //track-remainders;
+        cpi = <DEFAULT_CPI>;
+        default-dt-ms = <SCROLL_DEFAULT_DT_MS>;
     };
 
     sensor_rotation: sensor_rotation {
-        compatible = "zmk,input-processor-meteorite-sensor-rotation";
-        #input-processor-cells = <0>;
+        compatible = "zmk,input-meteorite-sensor-rotation";
+        device = <&trackball>;
         rotation-angle = <ROTATION_ANGLE>;
-    };
-
-    xy_clipper: xy_clipper {
-        compatible = "zmk,input-processor-meteorite-xy-clipper";
-        #input-processor-cells = <0>;
-        threshold = <CLIPPER_THRESHOLD>;
-        invert-x = <INVERT_X>;
-        invert-y = <INVERT_Y>;
     };
 
     /*
@@ -224,10 +203,8 @@
     ball_profile_router: ball_profile_router {
         compatible = "zmk,input-processor-meteorite-ball-profile";
         #input-processor-cells = <0>;
-        /* SCROLL profile のサブチェーン（現挙動を踏襲） */
-        input-processors = <&xy_clipper>,
-                           <&scroll_motion_scaler>,
-                           <&to_wheel>;
+        /* raw motionへgainを適用してからstep化するScroll Scaling v2 */
+        input-processors = <&scroll_transform>;
         /* 固定 Profile の 12 binding（profile-major / 方向 LEFT,RIGHT,UP,DOWN）。
          * &ball_mosk <Win> <Mac>（0 = そのOSで no-op）、OS非依存は &kp。
          * ズームは consumer の C_AC_ZOOM_IN/OUT だとブラウザ/OS が反応しないため、
@@ -253,10 +230,9 @@
 
     trackball_listener {
         compatible = "zmk,input-listener";
-        device = <&trackball>;
+        device = <&sensor_rotation>;
 
-        input-processors = <&sensor_rotation>,
-                           <&ball_profile_router>,
+        input-processors = <&ball_profile_router>,
                            <&motion_scaler>;
     };
 };
