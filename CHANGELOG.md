@@ -1,5 +1,22 @@
 # Changelog
 
+## [4.5.0](https://github.com/iwk7273/zmk-config-meteorite40/compare/v4.4.0...v4.5.0) (2026-07-20)
+
+
+### Features
+
+* **input:** adopt frame-aware sensor rotation ([7023a85](https://github.com/iwk7273/zmk-config-meteorite40/commit/7023a8556994b617db0a941518d015343b6328ca))
+* **input:** enable adaptive pointer and scroll profiles ([6396b42](https://github.com/iwk7273/zmk-config-meteorite40/commit/6396b42f8f769702964f87aabe05a110ad3f8a86))
+* **pointer:** enable scaling profiles v2 ([23abb8f](https://github.com/iwk7273/zmk-config-meteorite40/commit/23abb8f085974a443afc241d2d300f16db5e7858))
+* **pointer:** pin Custom profile firmware ([f834c7c](https://github.com/iwk7273/zmk-config-meteorite40/commit/f834c7c959d211d69140f2912728dd45673ae2d3))
+* **scroll:** use adaptive scaling v2 ([9fa77cb](https://github.com/iwk7273/zmk-config-meteorite40/commit/9fa77cb6a371de3594fc7dd1de0205d694486d5b))
+
+
+### Bug Fixes
+
+* **firmware:** pin published Studio schema ([713f57f](https://github.com/iwk7273/zmk-config-meteorite40/commit/713f57fb873a3cb4a8f700b839482e1d47048668))
+* **studio:** pin backpressure-safe RPC ([887955a](https://github.com/iwk7273/zmk-config-meteorite40/commit/887955a243ab1e92fe27e9e6c7e21a1f4a549145))
+
 ## [4.4.0](https://github.com/iwk7273/zmk-config-meteorite40/compare/v4.3.1...v4.4.0) (2026-07-13)
 
 
