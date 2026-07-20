@@ -15,7 +15,7 @@
 
 #define DEFAULT_CPI 800         // トラックボールの感度
 #define ROTATION_ANGLE 20       // トラックボールのY軸を回転
-#define CLIPPER_THRESHOLD 20    // スクロール時に斜めの値をクリップ
+#define SCROLL_THRESHOLD 20     // スクロール1ステップのraw count閾値
 
 // Ball Profile 値（enum zmk_ball_profile / zmk.meteorite.BallProfile と一致させること）
 #define BALL_OFF 0
@@ -155,7 +155,7 @@
     scroll_transform: scroll_transform {
         compatible = "zmk,input-processor-meteorite-scroll-transform";
         #input-processor-cells = <0>;
-        threshold = <CLIPPER_THRESHOLD>;
+        threshold = <SCROLL_THRESHOLD>;
         invert-x = <INVERT_X>;
         invert-y = <INVERT_Y>;
         scaling-mode = <SCROLL_SCALING_MODE>;
@@ -164,8 +164,8 @@
     };
 
     sensor_rotation: sensor_rotation {
-        compatible = "zmk,input-processor-meteorite-sensor-rotation";
-        #input-processor-cells = <0>;
+        compatible = "zmk,input-meteorite-sensor-rotation";
+        device = <&trackball>;
         rotation-angle = <ROTATION_ANGLE>;
     };
 
@@ -230,10 +230,9 @@
 
     trackball_listener {
         compatible = "zmk,input-listener";
-        device = <&trackball>;
+        device = <&sensor_rotation>;
 
-        input-processors = <&sensor_rotation>,
-                           <&ball_profile_router>,
+        input-processors = <&ball_profile_router>,
                            <&motion_scaler>;
     };
 };
