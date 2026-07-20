@@ -1,0 +1,28 @@
+name: validate-release-pr
+
+on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize]
+
+permissions:
+  contents: read
+
+jobs:
+  release-please-body:
+    if: startsWith(github.head_ref, 'release-please--branches--')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify Release Please metadata
+        shell: bash
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: |
+          if [[ "$PR_BODY" != ':robot: I have created a release *beep* *boop*'* ]]; then
+            echo '::error::Release Please PR body header is missing. Restore the generated PR body instead of replacing it.'
+            exit 1
+          fi
+
+          if [[ "$PR_BODY" != *'This PR was generated with [Release Please]'* ]]; then
+            echo '::error::Release Please PR body footer is missing. Restore the generated PR body instead of replacing it.'
+            exit 1
+          fi

@@ -38,6 +38,15 @@ jobs:
         with:
           name: firmware
           path: dist
+      - name: Normalize release asset names
+        shell: bash
+        run: |
+          mv dist/meteorite40-xiao_ble__zmk-zmk.uf2 dist/meteorite40.uf2
+          mv dist/meteorite40_low-xiao_ble__zmk-zmk.uf2 dist/meteorite40_low.uf2
+          sha256sum dist/meteorite40.uf2 dist/meteorite40_low.uf2
       - env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release upload "${{ needs.release-please.outputs.tag_name }}" dist/*.uf2 --repo "${{ github.repository }}"
+        run: >-
+          gh release upload "${{ needs.release-please.outputs.tag_name }}"
+          dist/meteorite40.uf2 dist/meteorite40_low.uf2
+          --repo "${{ github.repository }}"
